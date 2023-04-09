@@ -1,26 +1,35 @@
 Vagrant.configure("2") do |config|
   username = ENV["USER"]
-  config.vm.box = "perk/ubuntu-2204-arm64"
+  server_name = "#{username}S"
+  serverw_name = "#{username}SW"
+
+  # config.vm.box = "perk/ubuntu-2204-arm64"
+  config.vm.box = "generic/ubuntu2004"
   config.vm.box_check_update = false
 
-  # config.vm.network "forwarded_port", guest: 50022, host: 8080
-  config.vm.define "#{username}S" do |server|
-    server.vm.hostname = "#{username}S"
-    server.vm.provider "qemu" do |q|
-      q.memory = 1024
-      # q.cpu = 1 
-      q.ssh_port = 2222
-      q.extra_netdev_args = "tap,id=net0,ifname=tap_#{username}SW,downscript=no,net=192.168.51.0/24,dhcpstart=192.168.51.11,hostfwd=tcp::50025-:22"
+  config.vm.define server_name do |server|
+    server.vm.network "private_network", ip: "192.168.56.10"
+    server.vm.hostname = server_name
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = 1024
+      vb.cpus = 1
+      vb.name = server_name
+
+      #vb.ssh_port = 2222
+      #vb.extra_netdev_args = "tap,id=net0,ifname=tap_#{username}SW,downscript=no,net=192.168.51.0/24,dhcpstart=192.168.51.11,hostfwd=tcp::50025-:22"
     end
   end
 
-  config.vm.define "#{username}SW" do |server|
-    server.vm.hostname = "#{username}SW"
-    server.vm.provider "qemu" do |q|
-      q.memory = 1024
-      # q.cpu = 1
-      q.ssh_port = 2223
-      q.extra_netdev_args = "tap,id=net0,ifname=tap_#{username}SW,downscript=no,net=192.168.51.0/24,dhcpstart=192.168.51.11,hostfwd=tcp::50025-:22"
+  config.vm.define serverw_name do |server|
+    server.vm.network "private_network", ip: "192.168.56.11"
+    server.vm.hostname = serverw_name
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = 1024
+      vb.cpus = 1
+      vb.name = serverw_name
+
+      #vb.ssh_port = 2223
+      #vb.extra_netdev_args = "tap,id=net0,ifname=tap_#{username}SW,downscript=no,net=192.168.51.0/24,dhcpstart=192.168.51.11,hostfwd=tcp::50025-:22"
     end
   end
 
