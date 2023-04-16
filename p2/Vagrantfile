@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
   config.vm.define server_name do |server|
     ## networking (don't work for qemu)
     #server.vm.network "private_network", ip: "192.168.56.10"
-    server.vm.synced_folder "./configs", "/home/vagrant/configs", type: "smb", smb_host: "192.168.43.131"
+    server.vm.synced_folder "./configs", "/home/vagrant/configs", type: "smb", smb_host: "192.168.1.152"
     server.vm.hostname = server_name
     server.vm.provider provider do |prvdr|
       ## virtualbox provider option
@@ -29,7 +29,7 @@ Vagrant.configure("2") do |config|
 
       ## qemu provider option
       prvdr.ssh_port = 2222
-      prvdr.extra_netdev_args = "hostfwd=tcp::8080-:80"
+      prvdr.extra_netdev_args = "hostfwd=tcp::30008-:80,hostfwd=tcp::30007-:30007"
     end
   end
 
