@@ -20,8 +20,9 @@ Vagrant.configure("2") do |config|
       vb.cpus = 1
       vb.name = server_name
 
+      # those option are speciffic for qemu providor
       #vb.ssh_port = 2222
-      #vb.extra_netdev_args = "tap,id=net0,ifname=tap_#{username}SW,downscript=no,net=192.168.51.0/24,dhcpstart=192.168.51.11,hostfwd=tcp::50025-:22"
+      vb.extra_netdev_args = "tap,id=net0,ifname=tap_#{username}SW,downscript=no,net=192.168.51.0/24,dhcpstart=192.168.56.11,hostfwd=tcp::50025-:22"
     end
   end
 
@@ -33,10 +34,10 @@ Vagrant.configure("2") do |config|
       vb.cpus = 1
       vb.name = serverw_name
 
+      # those option are speciffic for qemu providor
       #vb.ssh_port = 2223
-      #vb.extra_netdev_args = "tap,id=net0,ifname=tap_#{username}SW,downscript=no,net=192.168.51.0/24,dhcpstart=192.168.51.11,hostfwd=tcp::50025-:22"
+      #vb.extra_netdev_args = "tap,id=net0,ifname=tap_#{username}SW,downscript=no,net=192.168.51.0/24,dhcpstart=192.168.56.11,hostfwd=tcp::50025-:22"
     end
   end
-
 
 end
