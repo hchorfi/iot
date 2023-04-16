@@ -60,7 +60,6 @@ kind: Service
 metadata:
   name: app1
 spec:
-  type: NodePort
   selector:
     name: app1
   ports:
@@ -68,4 +67,3 @@ spec:
     protocol: TCP
     port: 80
     targetPort: app1-http
-    nodePort: 30007
