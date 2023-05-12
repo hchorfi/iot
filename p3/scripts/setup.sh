@@ -30,3 +30,21 @@ curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/b
 echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
+## Run cluster
+sudo k3d cluster create iot -a 1 -p 80:80
+
+## check if cluster created
+
+## deploy argocd
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+## check if argocd deployed anservice exist
+
+## deploy ingress for argocd
+sudo kubectl apply -f ingress.yaml
+
+## edit argocd deployment to be insecured
+# kubectl edit deployment argocd-server to be automated
+
+
