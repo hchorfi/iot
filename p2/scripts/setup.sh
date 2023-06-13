@@ -8,9 +8,9 @@ sudo apt-get update
 curl -sfL https://get.k3s.io | sh -
 
 ## deploy apps
-sudo kubectl apply -f app1.yaml
-sudo kubectl apply -f app2.yaml
-sudo kubectl apply -f app3.yaml
+sudo kubectl apply -f /home/vagrant/configs/app1.yaml
+sudo kubectl apply -f /home/vagrant/configs/app2.yaml
+sudo kubectl apply -f /home/vagrant/configs/app3.yaml
 
 ## deploy ingree
-sudo kubectl apply -f ingress.yaml
+sudo kubectl apply -f /home/vagrant/configs/ingress.yaml
