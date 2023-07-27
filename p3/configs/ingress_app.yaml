@@ -1,8 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: argocd
-  namespace: argocd
+  name: app
 spec:
   rules:
   - http:
@@ -11,6 +10,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: argocd-server
+            name: app2
             port:
-              number: 80
+              number: 8080

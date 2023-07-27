@@ -53,5 +53,5 @@ spec:
   ports:
   - name: app2-http-svc
     protocol: TCP
-    port: 80
+    port: 8080
     targetPort: app2-http
