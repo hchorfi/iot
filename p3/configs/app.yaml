@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: openresty
-        image: hchorfi/iot-ssh:v2
+        image: hchorfi/iot-ssh:v1
         ports:
           - containerPort: 80
             name: app-http
