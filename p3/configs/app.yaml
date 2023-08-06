@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app2
+  name: app
   labels:
-    name: app2
+    name: app
 spec:
   replicas: 3
   selector:
     matchLabels:
-      name: app2
+      name: app
   template:
     metadata:
       labels:
-        name: app2
+        name: app
     spec:
       containers:
       - name: openresty
         image: hchorfi/iot-ssh:v2
         ports:
           - containerPort: 80
-            name: app2-http
+            name: app-http
         env:
           - name: NODE_NAME
             valueFrom:
@@ -46,12 +46,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: app2
+  name: app
 spec:
   selector:
-    name: app2
+    name: app
   ports:
-  - name: app2-http-svc
+  - name: app-http-svc
     protocol: TCP
     port: 8080
-    targetPort: app2-http
+    targetPort: app-http
