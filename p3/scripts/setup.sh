@@ -3,7 +3,6 @@
 ## setup
 echo "=============== Update & OS bootstrapping ============="
 sudo apt-get update
-#sudo mkdir configs
 
 ## install docker
 echo "=============== Install Docker ============="
@@ -26,18 +25,14 @@ echo "=============== Install k3d ============="
 wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 
 ## install kubectl (binary)
-#arm64
 echo "=============== Install kubectl ============="
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
-curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl.sha256"
-echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+curl -LO https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
 
 ## Run cluster
 echo "=============== Run cluster ============="
 sudo k3d cluster create iot -a 1 -p 80:80
-
-## check if cluster created
 
 ## Deploy argocd
 echo "=============== Deploy argocd ============="
@@ -49,9 +44,3 @@ kubectl apply -f configs/ingress_argocd.yaml
 argocd_password=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 echo "argocd Username: admin"
 echo "argocd Password: $argocd_password"
-## check if argocd deployed anservice exist
-
-## deploy ingress for argocd
-
-##
-

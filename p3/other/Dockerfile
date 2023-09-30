@@ -1,4 +1,4 @@
-FROM openresty/openresty:buster-aarch64
+FROM openresty/openresty
 
 RUN apt-get update
 RUN apt-get install curl vim -y
