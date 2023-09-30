@@ -1,57 +1,19 @@
 Vagrant.configure("2") do |config|
-  username = ENV["USER"]
+  username = "hchorfi"
   server_name = "#{username}S"
-  serverw_name = "#{username}SW"
-  provider = "vmware_desktop" #option: vmware_desktop, virtualbox, qemu
-  
-  ## qemu box mac m1
-  # config.vm.box = "perk/ubuntu-2204-arm64"
+  server_ip = "192.168.56.110"
 
-  # vmware fusion mac m1
-  config.vm.box = "spox/ubuntu-arm"
-  config.vm.box_version = "1.0.0"
-
-  ## virtualbox box intel
-  # config.vm.box = "focal-server"
-  # config.vm.box_url = "https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64-vagrant.box"
-
-  config.vm.box_check_update = false
-
-  ## Provisioning script for bootstrapping
+  config.vm.box = "bento/ubuntu-22.04"
   config.vm.provision "shell", path: "scripts/setup.sh"
-  # config.vm.provision "file", source: "configs", destination: "/configs"
+  config.vm.synced_folder "./configs", "/home/vagrant/configs"
 
   config.vm.define server_name do |server|
-    ## networking (don't work for qemu or vmfusion on mac m1)
-    #server.vm.network "private_network", ip: "192.168.56.10"
-
-    ## synced folder
-    # qemu !change the ip to the one on you mac file sharing smb seting
-    # server.vm.synced_folder "./configs", "/home/vagrant/configs", type: "smb", smb_host: "192.168.1.152"
-    
-    # vmfusion
-    config.vm.synced_folder "./configs", "/home/vagrant/configs"
-
-
+    server.vm.network "private_network", ip: server_ip
     server.vm.hostname = server_name
-    server.vm.provider provider do |prv|
-      ## virtualbox provider option
-      # prv.memory = 1024
-      # prv.cpus = 1
-      # prv.name = server_name
-
-      ## qemu provider option
-      # prv.ssh_port = 2222
-      # prv.extra_netdev_args = "hostfwd=tcp::30008-:80,hostfwd=tcp::30007-:30007"
-
-      ## vmware provider option
-      prv.vmx["memsize"] = "1024"
-      prv.vmx["numvcpus"] = "2"
-      prv.vmx["ethernet0.virtualdev"] = "vmxnet3" #fix Waiting for the VM to receive an address ... problem
-      prv.gui = true #fix vmrun
-      prv.ssh_info_public = true #fix vagrant ssh problem
-
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = 4096
+      vb.cpus = 2
+      vb.name = server_name
     end
   end
-
 end

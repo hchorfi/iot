@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: openresty
-        image: openresty/openresty:buster-aarch64
+        image: hchorfi/iot-ssh:linux-v1
         ports:
           - containerPort: 80
             name: app3-http
@@ -41,23 +41,6 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: status.podIP
-        volumeMounts:
-        - name: nginx-conf
-          mountPath: /etc/openresty/nginx.conf
-        - name: nginx-default
-          mountPath: /etc/nginx/conf.d/default.conf
-        - name: lua-info
-          mountPath: /etc/openresty/info.lua
-      volumes:
-      - name: nginx-default
-        hostPath:
-          path: /home/vagrant/configs/default.conf
-      - name: nginx-conf
-        hostPath:
-          path: /home/vagrant/configs/nginx.conf
-      - name: lua-info
-        hostPath:
-          path: /home/vagrant/configs/info.lua
 
 ---
 apiVersion: v1
