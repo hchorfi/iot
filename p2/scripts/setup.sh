@@ -4,7 +4,7 @@
 sudo apt-get update
 
 ## install k3s as a server
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='--node-external-ip=192.168.56.110' sh -
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--node-ip 192.168.56.110" K3S_NODE_NAME="$HOSTNAME" K3S_KUBECONFIG_MODE="644" sh -
 
 ## deploy apps
 sudo kubectl apply -f configs/app1.yaml
