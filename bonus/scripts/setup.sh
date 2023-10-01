@@ -1,34 +1,39 @@
 #!/bin/bash
 
-## setup
-sudo apt-get update
+curl --silent "https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh" | sudo bash
+sudo EXTERNAL_URL="http://gitlab.local" apt-get install gitlab-ee
 
-## install docker
-echo "=============== Install Docker ============="
-sudo apt-get install \
-    ca-certificates \
-    curl \
-    gnupg -y
-sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-sudo chmod a+r /etc/apt/keyrings/docker.gpg
-echo \
-  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+# ## setup
+# sudo apt-get update
 
-sudo docker run --detach \
-  --hostname gitlab.local \
-  --publish 443:443 --publish 80:80 --publish 2222:22 \
-  --name gitlab \
-  --restart always \
-  --volume config:/etc/gitlab \
-  --volume logs:/var/log/gitlab \
-  --volume data:/var/opt/gitlab \
-  --shm-size 256m \
-  gitlab/gitlab-ee:latest
+# ## install docker
+# echo "=============== Install Docker ============="
+# sudo apt-get install \
+#     ca-certificates \
+#     curl \
+#     gnupg -y
+# sudo install -m 0755 -d /etc/apt/keyrings
+# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+# sudo chmod a+r /etc/apt/keyrings/docker.gpg
+# echo \
+#   "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+#   "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+#   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# sudo apt-get update
+# sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+
+# ## install gitlab
+# echo "=============== Install Gitlab ============="
+# sudo docker run --detach \
+#   --hostname gitlab.local \
+#   --publish 443:443 --publish 80:80 --publish 2222:22 \
+#   --name gitlab \
+#   --restart always \
+#   --volume config:/etc/gitlab \
+#   --volume logs:/var/log/gitlab \
+#   --volume data:/var/opt/gitlab \
+#   --shm-size 256m \
+#   gitlab/gitlab-ee:latest
 
 # ## install k3s as a server
 # curl -sfL https://get.k3s.io | sh -
