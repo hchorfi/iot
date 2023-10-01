@@ -8,9 +8,9 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/hchorfi/iot.git
-    targetRevision: hamza
-    path: p3/configs
+    repoURL: https://github.com/hchorfi/hchorfi-iot-app.git
+    targetRevision: main
+    path: ./
   destination: 
     server: https://kubernetes.default.svc
     namespace: dev

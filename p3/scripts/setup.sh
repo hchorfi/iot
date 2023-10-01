@@ -32,7 +32,7 @@ sudo mv ./kubectl /usr/local/bin/kubectl
 
 ## Run cluster
 echo "=============== Run cluster ============="
-sudo k3d cluster create iot -a 1 -p 80:80
+k3d cluster create iot -a 1 -p 80:80
 
 ## Deploy argocd
 echo "=============== Deploy argocd ============="
@@ -41,8 +41,12 @@ kubectl create namespace dev
 wget https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 grep -q '/usr/local/bin/argocd-server --insecure' install.yaml && echo "Argo already insecure" || sed -i 's|/usr/local/bin/argocd-server|&\n        - --insecure|' install.yaml
 kubectl apply -n argocd -f install.yaml
-kubectl apply -f ../configs/ingress_argocd.yaml
-kubectl apply -f ../configs/argocd-declarative-setup.yml
-export argocd_password=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+kubectl apply -f ../confs/ingress_argocd.yaml
+kubectl apply -f ../confs/argocd-declarative-setup.yml
+argocd_password=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 echo "argocd Username: admin"
 echo "argocd Password: $argocd_password"
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+
